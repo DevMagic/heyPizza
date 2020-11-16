@@ -1,11 +1,15 @@
 const express = require('express')
 const app = express()
  
+app.use(cors())
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.post('/slack/events', function (req, res) {
   console.log('>>> req.params',req.params);
   console.log('>>> req.body',req.body);
   console.log('>>> req.query',req.query);
-  console.log('>>> req',req);
+  return req.params;
 })
 
 app.get('/', function (req, res) {
