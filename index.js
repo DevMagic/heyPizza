@@ -6,7 +6,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.post('/slack/events', function (req, res) {
   console.log('>>> req.body',req.body);
-  return req.body.challenge;
+  return req.body;
 })
 
 app.get('/', function (req, res) {
