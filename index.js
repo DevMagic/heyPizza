@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.post('/slack/events', function (req, res) {
-  console.log('>>> req.body',req.body);
+  // console.log('>>> req.body',req.body);
   let message = '';
   const users = [{
     id:'U01EVNH919Q',
