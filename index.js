@@ -22,7 +22,9 @@ app.post('/slack/events', function (req, res) {
     name:'Bot teste'
   }]
   const channelId = 'C01B1CKBJB1'
-
+  console.log('>>> req.body.channel != channelId',req.body.channel != channelId);
+  console.log('>>> req.body.user',req.body.user);
+  console.log('>>> req.body.text',req.body.text);
   if(req.body.channel != channelId){
     return;
   }
