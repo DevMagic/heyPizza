@@ -12,7 +12,7 @@ routes.post('/slack/verification', function (req, res) {
 })
   
 
-routes.post('/slack/events', function (req, res) {
+routes.post('/slack/events', async function (req, res) {
   
   
   const event = req.body.event;
