@@ -46,7 +46,7 @@ routes.post('/slack/events', async function (req, res) {
 
   users.forEach(user => {
     if(!!~event.text.indexOf(user.name)){
-      user.received.push({message:event.text,user:userGive.name})
+      user.received.push({message:event.text,userId:userGive.id})
     }
   })
 
@@ -57,13 +57,16 @@ routes.post('/slack/events', async function (req, res) {
   return res.status(200).send(event.challenge);
 })
 
+routes.get('/dashboard', function (req, res) {
+  res.status(200).send(`<pre>${users}</pre>`)
+})
 
 routes.get('/ping', function (req, res) {
   res.send('pong')
 })
 
 async function _updateFile(data){
-  fs.writeFile('.feedbacks.json', 
+  fs.writeFile('./src/feedbacks.json', 
     JSON.stringify(data, null, 4),
     {
       enconding:'utf-8'
