@@ -8,10 +8,13 @@ const channelId = 'C01B1CKBJB1'
 
 routes.post('/slack/events', function (req, res) {
   
-  if(event.channel != channelId) return;
   
   const event = req.body.event;
 
+  return   res.status(200).send(event.challenge);
+
+  if(event.channel != channelId) return;
+  
   let message = '';
 
   console.log('>>> req.body.channel != channelId',event.channel != channelId);
