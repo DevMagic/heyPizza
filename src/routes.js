@@ -39,13 +39,14 @@ routes.post('/slack/events', async function (req, res) {
 
   users.forEach(user => {
     if(event.user == user.id){
+      userGive = user;
       user.give.push(event.text);
     }
   })
 
   users.forEach(user => {
     if(!!~event.text.indexOf(user.name)){
-      user.received.push(event.text)
+      user.received.push({message:event.text,user:userGive.name})
     }
   })
 
