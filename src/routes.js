@@ -58,7 +58,11 @@ routes.post('/slack/events', async function (req, res) {
 })
 
 routes.get('/dashboard', function (req, res) {
-  res.status(200).send(`<pre>${users}</pre>`)
+  res.status(200).send(`<pre>${JSON.stringify(users, null, 4)}</pre>`)
+})
+
+routes.get('/json', function (req, res) {
+  res.status(200).send(users)
 })
 
 routes.get('/ping', function (req, res) {
