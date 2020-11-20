@@ -29,29 +29,31 @@ routes.post('/slack/events', function (req, res) {
   let userGive = null;
   let userReceived = [];
 
-  users.forEach(user => {
-    if(event.user == user.id){
-      userGive = user;
-      message = `${user.name} deu o feedback`
-    }
-  })
-
-  event.text = event.text.replace(`<@U01C6BK6DTJ>`,'')
+  event.text = event.text.replace(`<@U01ETB3J1N3>`,'')
 
   users.forEach(user => {
     if(!!~event.text.indexOf(user.id)){
-      userReceived.push(user)
       event.text = event.text.replace(`<@${user.id}>`,user.name)
     }
   })
 
-  message += event.text;
+  users.forEach(user => {
+    if(event.user == user.id){
+      user.give.push(event.text);
+    }
+  })
 
-  console.log('>>> message',message);
-  console.log('>>> userReceived',userReceived);
-  console.log('>>> userGive',userGive);
+  users.forEach(user => {
+    if(!!~event.text.indexOf(user.name)){
+      user.received.push(event.text)
+    }
+  })
 
-  res.status(200).send(event.challenge);
+  console.log('>>> event.text',event.text);
+
+  await _updateFile(users);
+
+  return res.status(200).send(event.challenge);
 })
 
 
