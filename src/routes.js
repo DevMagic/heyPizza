@@ -1,5 +1,7 @@
 const axios = require('axios');
 const fs = require('fs');
+const path = require('path');
+const Handlebars = require('handlebars')
 const { Router } = require('express')
 const users = require('./feedbacks.json');
 const routes = Router();
@@ -58,12 +60,15 @@ routes.post('/slack/events', async function (req, res) {
 })
 
 routes.get('/dashboard', function (req, res) {
-  res.status(200).send(`<pre>${JSON.stringify(users, null, 4)}</pre>`)
+  const users = require('./feedbacks.json');
+  let body = fs.readFileSync(path.resolve(__dirname + '/public/index.html'), 'utf8');
+  let html =  Handlebars.compile(body)({users});
+
+  res.status(200).send(html);
+
 })
 
-routes.get('/json', function (req, res) {
-  res.status(200).send(users)
-})
+
 
 routes.get('/ping', function (req, res) {
   res.send('pong')
