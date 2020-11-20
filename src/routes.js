@@ -59,7 +59,7 @@ routes.post('/slack/events', async function (req, res) {
   return res.status(200).send(event.challenge);
 })
 
-routes.get('/dashboard', function (req, res) {
+routes.get('/', function (req, res) {
   const users = require('./feedbacks.json');
   let body = fs.readFileSync(path.resolve(__dirname + '/public/index.html'), 'utf8');
   let html =  Handlebars.compile(body)({users});
