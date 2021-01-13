@@ -9,7 +9,6 @@ const routes = Router();
 const channelId = 'C01B1CKBJB1'
 
 routes.post('/slack/verification', function (req, res) {
-  console.log('>>> req.body',req.body);
   return   res.status(200).send(req.body.challenge);
 })
   
@@ -23,11 +22,6 @@ routes.post('/slack/events', async function (req, res) {
   
   let message = '';
 
-  console.log('>>> req.body.channel != channelId',event.channel != channelId);
-  console.log('>>> req.body.user',event.user);
-  console.log('>>> req.body.text',event.text);
-  
-
   let userGive = null;
   let userReceived = [];
 
@@ -35,6 +29,7 @@ routes.post('/slack/events', async function (req, res) {
 
   users.forEach(user => {
     if(!!~event.text.indexOf(user.id)){
+      userReceived.push(user.id);
       event.text = event.text.replace(`<@${user.id}>`,user.name)
     }
   })
@@ -42,17 +37,15 @@ routes.post('/slack/events', async function (req, res) {
   users.forEach(user => {
     if(event.user == user.id){
       userGive = user;
-      user.give.push(event.text);
+      user.give.push({message:event.text, createdAt:new Date()});
     }
   })
 
   users.forEach(user => {
-    if(!!~event.text.indexOf(user.name)){
-      user.received.push({message:event.text,userId:userGive.id})
+    if(userReceived.find(id => id == user.id)){
+      user.received.push({message:event.text,userId:userGive.id,createdAt:new Date()})
     }
   })
-
-  console.log('>>> event.text',event.text);
 
   await _updateFile(users);
 
@@ -68,11 +61,25 @@ routes.get('/', function (req, res) {
 
 })
 
+routes.get('/users', function (req, res) {
+  const users = require('./feedbacks.json');
+  res.status(200).send(users);
+});
+
+routes.put('/users', async function (req, res) {
+  const users = req.body.users;
+  if(!users || !Array.isArray(users)){
+    return res.status(400).send({error:'invalid users'});
+  }
+  await _updateFile(users);
+  res.status(200).send(users);
+})
+
 
 
 routes.get('/ping', function (req, res) {
   res.send('pong')
-})
+});
 
 async function _updateFile(data){
   fs.writeFile('./src/feedbacks.json', 
