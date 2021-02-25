@@ -4,7 +4,8 @@ const botId = process.env.botId || 'U01ETB3J1N3';
 const fs = require('fs');
 // const axios = require('axios')
 const path = require('path');	
-const Handlebars = require('handlebars')
+const Handlebars = require('handlebars');
+let USERS = require('./feedbacks.json');
 
 exports.verification = (req, res) => {
     console.log('verification', new Date());
@@ -28,21 +29,21 @@ exports.receiveEvent = async (req, res) => {
 
         event.text = event.text.replace(`<@${botId}>`, '')
 
-        users.forEach((user) => {
+        USERS.forEach((user) => {
             if (!!~event.text.indexOf(user.id)) {
                 userReceived.push(user.id)
                 event.text = event.text.replace(`<@${user.id}>`, user.name)
             }
         })
 
-        users.forEach((user) => {
+        USERS.forEach((user) => {
             if (event.user == user.id) {
                 userGive = user
                 user.give.push({ message: event.text, createdAt: new Date() })
             }
         })
 
-        users.forEach((user) => {
+        USERS.forEach((user) => {
             if (userReceived.find((id) => id == user.id)) {
                 user.received.push({
                     message: event.text,
@@ -52,7 +53,7 @@ exports.receiveEvent = async (req, res) => {
             }
         })
 
-        await _updateFile(users)
+        await _updateFile(USERS)
 
         return res.status(200).send(event.challenge)
     } catch (error) {
@@ -61,8 +62,13 @@ exports.receiveEvent = async (req, res) => {
   
 };
 
+exports.getUsers = async (req, res) => {
+    console.log('getUsers', new Date(),'>>> USERS', USERS);
+    res.status(200).send(USERS)
+}
+
 exports.getIndex = async (req, res) => {
-  const users = require('./feedbacks.json')
+    const users = USERS;
     let body = fs.readFileSync(
         path.resolve(__dirname + '/public/index.html'),
         'utf8'
@@ -75,12 +81,13 @@ exports.getIndex = async (req, res) => {
 exports.updateUsers = async (req, res) => {
     try {
         console.log('updateUsers', new Date());
-        const users = req.body.users
+        const newUsers = req.body.users
         if (!users || !Array.isArray(users)) {
             return res.status(400).send({ error: 'invalid users' })
         }
-        await _updateFile(users)
-        res.status(200).send(users)
+        USERS = newUsers;
+        await _updateFile(newUsers)
+        res.status(200).send(USERS)
     } catch (error) {
         console.log('>>> updateUsers', error);
     }
