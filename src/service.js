@@ -7,11 +7,16 @@ const path = require('path');
 const Handlebars = require('handlebars')
 
 exports.verification = (req, res) => {
+    console.log('verification', new Date());
   return res.status(200).send(req.body.challenge)
 };
 
 exports.receiveEvent = async (req, res) => {
     try {
+
+        console.log('>>> channelId', channelId);
+        console.log('>>> botId', botId);
+
         const event = req.body.event
 
         if (event.channel != channelId) return
@@ -69,6 +74,7 @@ exports.getIndex = async (req, res) => {
 
 exports.updateUsers = async (req, res) => {
     try {
+        console.log('updateUsers', new Date());
         const users = req.body.users
         if (!users || !Array.isArray(users)) {
             return res.status(400).send({ error: 'invalid users' })
