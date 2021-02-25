@@ -17,12 +17,7 @@ routes.get('/', service.getIndex)
 
 routes.put('/users', service.updateUsers)
 
-routes.get('/users', function (req, res) {
-    console.log('getUsers', new Date());
-    const users = require('./feedbacks.json');
-    console.log('>>> users', users);
-    res.status(200).send(users)
-})
+routes.get('/users', service.getUsers )
 
 routes.get('/ping', function (req, res) {
     res.send('pong')
