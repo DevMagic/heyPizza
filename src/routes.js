@@ -18,7 +18,9 @@ routes.get('/', service.getIndex)
 routes.put('/users', service.updateUsers)
 
 routes.get('/users', function (req, res) {
-    const users = require('./feedbacks.json')
+    console.log('getUsers', new Date());
+    const users = require('./feedbacks.json');
+    console.log('>>> users', users);
     res.status(200).send(users)
 })
 
