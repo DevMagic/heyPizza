@@ -2,6 +2,9 @@ const users = require('./feedbacks.json')
 const channelId =  process.env.channelId || 'C01B1CKBJB1';
 const botId = process.env.botId || 'U01ETB3J1N3';
 const fs = require('fs');
+// const axios = require('axios')
+const path = require('path');	
+const Handlebars = require('handlebars')
 
 exports.verification = (req, res) => {
   return res.status(200).send(req.body.challenge)
