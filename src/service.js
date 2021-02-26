@@ -2,6 +2,7 @@ const users = require('./feedbacks.json')
 const channelId =  process.env.channelId || 'C01B1CKBJB1';
 const botId = process.env.botId || 'U01ETB3J1N3';
 const fs = require('fs');
+const moment = require('moment');
 // const axios = require('axios')
 const path = require('path');	
 const Handlebars = require('handlebars');
@@ -73,6 +74,7 @@ exports.getIndex = async (req, res) => {
         
         const startMonth = moment().startOf('month');
         const endMonth = moment().endOf('month');
+        console.log('>>> getIndex // startMonth', startMonth, 'endMonth', endMonth);
         users = users.forEach(user => {
             user.give = user.give.filter(g => moment(g.createdAt).isSameOrBefore(endMonth) && moment(g.createdAt).isSameOrAfter(startMonth) )
             user.received = user.received.filter(r => moment(r.createdAt).isSameOrBefore(endMonth) && moment(r.createdAt).isSameOrAfter(startMonth))
