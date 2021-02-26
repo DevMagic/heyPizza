@@ -75,7 +75,7 @@ exports.getIndex = async (req, res) => {
         const startMonth = moment().startOf('month');
         const endMonth = moment().endOf('month');
         console.log('>>> getIndex // startMonth', startMonth, 'endMonth', endMonth);
-        users = users.forEach(user => {
+        users.forEach(user => {
             user.give = user.give.filter(g => moment(g.createdAt).isSameOrBefore(endMonth) && moment(g.createdAt).isSameOrAfter(startMonth) )
             user.received = user.received.filter(r => moment(r.createdAt).isSameOrBefore(endMonth) && moment(r.createdAt).isSameOrAfter(startMonth))
         })
