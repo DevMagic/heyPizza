@@ -71,7 +71,7 @@ exports.getUsers = async (req, res) => {
 
 exports.getIndex = async (req, res) => {
     try {
-        const users = _.cloneDeep(USERS);
+        let users = _.cloneDeep(USERS);
         
         const startMonth = moment().startOf('month');
         const endMonth = moment().endOf('month');
@@ -80,7 +80,7 @@ exports.getIndex = async (req, res) => {
             user.give = user.give.filter(g => moment(g.createdAt).isSameOrBefore(endMonth) && moment(g.createdAt).isSameOrAfter(startMonth) )
             user.received = user.received.filter(r => moment(r.createdAt).isSameOrBefore(endMonth) && moment(r.createdAt).isSameOrAfter(startMonth))
         })
-        _.sortBy(users, ['name'])
+        users = _.orderBy(users, ['name', ['asc']]);
         let body = fs.readFileSync(
             path.resolve(__dirname + '/public/index.html'),
             'utf8'
