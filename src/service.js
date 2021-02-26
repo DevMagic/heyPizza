@@ -3,6 +3,7 @@ const channelId =  process.env.channelId || 'C01B1CKBJB1';
 const botId = process.env.botId || 'U01ETB3J1N3';
 const fs = require('fs');
 const moment = require('moment');
+const _ = require('lodash');
 // const axios = require('axios')
 const path = require('path');	
 const Handlebars = require('handlebars');
@@ -70,7 +71,7 @@ exports.getUsers = async (req, res) => {
 
 exports.getIndex = async (req, res) => {
     try {
-        const users = USERS;
+        const users = _.cloneDeep(USERS);
         
         const startMonth = moment().startOf('month');
         const endMonth = moment().endOf('month');
@@ -79,7 +80,7 @@ exports.getIndex = async (req, res) => {
             user.give = user.give.filter(g => moment(g.createdAt).isSameOrBefore(endMonth) && moment(g.createdAt).isSameOrAfter(startMonth) )
             user.received = user.received.filter(r => moment(r.createdAt).isSameOrBefore(endMonth) && moment(r.createdAt).isSameOrAfter(startMonth))
         })
-        users.sort();
+        _.sortBy(users, ['name'])
         let body = fs.readFileSync(
             path.resolve(__dirname + '/public/index.html'),
             'utf8'
