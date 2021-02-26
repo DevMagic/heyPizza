@@ -68,14 +68,26 @@ exports.getUsers = async (req, res) => {
 }
 
 exports.getIndex = async (req, res) => {
-    const users = USERS;
-    let body = fs.readFileSync(
-        path.resolve(__dirname + '/public/index.html'),
-        'utf8'
-    )
-    let html = Handlebars.compile(body)({ users })
+    try {
+        const users = USERS;
+        
+        const startMonth = moment().startOf('month');
+        const endMonth = moment().endOf('month');
+        users = users.forEach(user => {
+            user.give = user.give.filter(g => moment(g.createdAt).isSameOrBefore(endMonth) && moment(g.createdAt).isSameOrAfter(startMonth) )
+            user.received = user.received.filter(r => moment(r.createdAt).isSameOrBefore(endMonth) && moment(r.createdAt).isSameOrAfter(startMonth))
+        })
+        users.sort();
+        let body = fs.readFileSync(
+            path.resolve(__dirname + '/public/index.html'),
+            'utf8'
+        )
+        let html = Handlebars.compile(body)({ users })
 
-    res.status(200).send(html)
+        return res.status(200).send(html)
+    } catch (error) {
+        console.log('>>> getIndex', error);
+    }
 };
 
 exports.updateUsers = async (req, res) => {
