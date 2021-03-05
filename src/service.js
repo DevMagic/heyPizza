@@ -72,9 +72,12 @@ exports.getUsers = async (req, res) => {
 exports.getIndex = async (req, res) => {
     try {
         let users = _.cloneDeep(USERS);
-        
-        const startMonth = moment().startOf('month');
-        const endMonth = moment().endOf('month');
+        let month = req.query.month;
+
+        month = !month || isNaN(req.query.month) ? moment().month() : month;
+
+        const startMonth = moment().month(month).startOf('month');
+        const endMonth = moment().month(month).endOf('month');
         console.log('>>> getIndex // startMonth', startMonth, 'endMonth', endMonth);
         users.forEach(user => {
             user.give = user.give.filter(g => moment(g.createdAt).isSameOrBefore(endMonth) && moment(g.createdAt).isSameOrAfter(startMonth) )
