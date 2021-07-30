@@ -1,6 +1,6 @@
 const { connection } = require('./connection');
 const camelcaseKeys = require("camelcase-keys");
-const snakecaseKeys = require('snakecase-keys')
+const snakecaseKeys = require('snakecase-keys');
 
 module.exports.create = async (user) => {
 
