@@ -13,17 +13,19 @@ class Connect {
 
   connection = null;
 
-  constructor(database = 'postgres'){
+  constructor(database = 'postgres'){    
     switch (database) {
       case  'postgres':
-        this.connection = new Pool(config);
+        this.connection = new Pool(this.config);
         break;
     }
+
+    console.log(`Set database on: ${database}`);
   }
 
   
   getConnection(){
-    return connection;
+    return this.connection;
   }
 
 }
