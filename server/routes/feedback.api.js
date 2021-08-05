@@ -94,6 +94,18 @@ routes.post('/retroactive', async (request, response) => {
   }
 })
 
+routes.get('/user/:userId', async (request, response) => {
+  try {
+
+    const userId = request.params.userId;
+
+    return response.send(await serviceFeedback.getFeedbacksByUserId(userId));
+  } catch (error) {
+    console.log('>>> error', error);
+    return response.status(400).send(error);
+  }
+})
+
 
 
 

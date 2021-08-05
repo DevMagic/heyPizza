@@ -1,9 +1,11 @@
 const { Router } = require('express');
 const routes = Router();
 
-
 routes.use('/user', require('./user.api'));
 routes.use('/feedback', require('./feedback.api'));
+routes.use('/slack', require('./slack.api'));
+routes.use('/', require('./heyPizza.api'));
+
 routes.get('/ping', async  (request, response) => {
   try {
     return response.send('pong');

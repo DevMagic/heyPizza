@@ -31,10 +31,10 @@ module.exports.retroactive = async () => {
   let feedbacks = [];
   let nextCursor = null;
   do {
-  
-    let params = {channel: process.env.channelId, token: token};
 
-    if(nextCursor){
+    let params = { channel: process.env.channelId, token: token };
+
+    if (nextCursor) {
       params.cursor = nextCursor;
     }
 
@@ -46,8 +46,8 @@ module.exports.retroactive = async () => {
   } while (nextCursor);
 
   for (const feedback of feedbacks) {
-    if(feedback['reply_count']){
-      let params = {channel: process.env.channelId, token: token, ts: feedback.ts};
+    if (feedback['reply_count']) {
+      let params = { channel: process.env.channelId, token: token, ts: feedback.ts };
       let history = await Slack.conversations.replies(params);
       feedbacks = feedbacks.concat(history.messages);
     }
@@ -63,7 +63,7 @@ module.exports.retroactive = async () => {
   feedbacks.forEach(feedback => {
     let usersPraised = []
     let user = users.find(u => u.externalId == feedback.user);
-    if(user){
+    if (user) {
       let userId = user.id;
       let createdAt = feedback.ts;
       let message = feedback.text;
@@ -73,7 +73,7 @@ module.exports.retroactive = async () => {
       message = message.replace(`<@${botId}>`, '@heyPizza');
 
       for (const user of users) {
-        if(!!~message.indexOf(`<@${user.externalId}>`)){
+        if (!!~message.indexOf(`<@${user.externalId}>`)) {
           usersPraised.push(user.id);
           message = message.replace(`<@${user.externalId}>`, user.name);
         }
@@ -90,9 +90,9 @@ module.exports.retroactive = async () => {
         })
       }
     }
-    
+
   });
-  
+
   for (const newFeedback of newFeedbacks) {
     await this.create(newFeedback);
   }
@@ -102,10 +102,70 @@ module.exports.retroactive = async () => {
 
 function duplicateCount(text, key) {
   let count = 0;
-  while(!!~text.indexOf(key)){
+  while (!!~text.indexOf(key)) {
     count++;
     text = text.replace(key, '');
-    
+
   }
   return count;
+}
+
+module.exports.newFeedbackBySlackEvent = async ({
+  createdAt,
+  text,
+  user_external_id
+}) => {
+
+  const botId = process.env.botId;
+  const usersPraised = [];
+  const newFeedbacks = [];
+
+  const users = await serviceUser.getAll();
+
+  let user = users.find(user => user.externalId === user_external_id);
+
+  if (!user) {
+    throw 'User doesn\'t exists';
+  }
+
+  let userId = user.id;
+
+  let pizza = duplicateCount(text, ':pizza:');
+
+  pizza = pizza > 2 ? 2 : pizza;
+  pizza = pizza == 0 ? 1 : pizza;
+
+  text = text.replace(`<@${botId}>`, '@heyPizza');
+
+  for (const user of users) {
+    if (!!~text.indexOf(`<@${user.externalId}>`)) {
+      usersPraised.push(user.id);
+      text = text.replace(`<@${user.externalId}>`, user.name);
+    }
+  }
+
+  for (const userPraised of usersPraised) {
+
+    if(userPraised === userId){     
+      continue;
+    }
+
+    newFeedbacks.push({
+      user_praised_id: userPraised,
+      user_id: userId,
+      message: text,
+      pizza,
+      createdAt: moment.unix(createdAt).toDate()
+    });
+
+  }
+
+  for (const newFeedback of newFeedbacks) {
+    await this.create(newFeedback);
+  }
+
+}
+
+module.exports.getFeedbacksByUserId = async (userId) => {
+  return repositoryFeedback.getFeedbacksByUserId(userId);
 }

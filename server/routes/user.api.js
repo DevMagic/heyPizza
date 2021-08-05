@@ -88,5 +88,4 @@ routes.delete('/:userId', async (request, response) => {
   }
 })
 
-
 module.exports = routes;
