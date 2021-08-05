@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hey Pizza</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="shortcut icon" href="./public/icon.png" >
+    <style>
+
+      .profile-img{
+        width: 80px;
+        border: 1px solid black;
+      }
+
+      .header-pizza th{
+        text-align: center;
+      }
+
+      .row-pizza td {
+        text-align: center; 
+        vertical-align: middle;        
+        max-width: 100px;
+        padding: 8px 0 !important;    
+        cursor: pointer;    
+      }
+
+      #content{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav{
+        width: 800px;
+        padding: 16px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .form-group{
+        padding: 0 16px !important;
+      }
+
+    </style>
+    
+  </head>
+  <body style="background-color: #ffd684; padding: 16px;">
+    <div style="display: flex;flex-direction: column; align-items: center;">
+      <img style="width: 200px;" src="./public/logo.jpg">
+      
+      <h1 style="color: white;font-weight: 800;">Hey Pizza</h1>
+    </div>
+
+    <div id="content">
+
+      <nav>
+        <div class="form-group">
+          <label>Período de tempo</label>
+          <select id="periods" onchange="selectPeriod()" class="form-control">
+            {{#select period}}
+            <option value="all">Tudo</option>
+            <option value="janeiro">Janeiro</option>
+            <option value="fevereiro">Fevereiro</option>
+            <option value="março">Março</option>
+            <option value="abril">Abril</option>
+            <option value="maio">Maio</option>
+            <option value="junho">Junho</option>
+            <option value="julho">Julho</option>
+            <option value="agosto">Agosto</option>
+            <option value="setembro">Setembro</option>
+            <option value="outubro">Outubro</option>
+            <option value="novembro">Novembro</option>
+            <option value="dezembro">Dezembro</option>
+            {{/select}}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Ordem</label>
+          <select id="orders" onchange="selectOrder()" class="form-control">
+            {{#select order}}
+            <option value="name">Name</option>
+            <option value="receiveds">Receiveds</option>
+            <option value="gives">Gives</option>
+            {{/select}}
+          </select>
+        </div>
+       
+      </nav>
+
+      
+      <article class="table-responsive" style="background-color: white;width: 800px;">
+        <table class="table table-bordered table-hover table-condensed" css="text-align:center">
+          <thead>
+            <tr class="header-pizza">
+              <th>
+                Name
+              </th>
+              <th>
+                Gives
+              </th>
+              <th>
+                Receiveds
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each users}}
+              <tr class="row-pizza" data-toggle="modal" data-target="#myModal" data-whatever="{{this.id}}">
+                <td>
+                  <div style="display: flex; flex-direction: column;align-items: center;">
+                    <img src="{{this.profileImageUrl}}" class="img-circle profile-img">
+                    {{this.name}}
+                  </div>
+                </td>
+                <td>{{this.gives}}</td>
+                <td>{{this.receiveds}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </article>
+    </div>
+    
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <ul id="myTabs" class="nav nav-tabs">
+              <li role="presentation" class="active" >
+                <a data-toggle="tab" aria-controls="gives" aria-expanded="true" id="a" href="#gives">Gives</a>
+              </li>
+              <li role="presentation" >
+                <a data-toggle="tab" aria-controls="receiveds" aria-expanded="false" id="b" href="#receiveds">Receiveds</a>
+              </li>
+            </ul>
+
+            <div id="myTabContent" class="tab-content">
+              <div role="tabpanel" style="padding: 8px 0;" class="tab-pane fade active in" id="gives" aria-labelledby="a" >
+
+                <ul id="gives-content" class="list-group">
+                  
+                </ul>
+
+              </div>
+              <div role="tabpanel" style="padding: 8px 0;" class="tab-pane fade" id="receiveds" aria-labelledby="b">
+
+                <ul id="receiveds-content" class="list-group">
+                  
+                </ul>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer style="display: flex;justify-content: center;">
+      <h5 style="color: white; font-weight: 600;">
+        creator by  <a style="margin: 0 8px;" href="https://github.com/laurencioScript">Gabriel Laurencio</a> & 
+        <a style="margin: 0 8px;" href="https://github.com/leandro-pereira">Leandro Pereira/a>
+      </h5>
+    </footer>
+    <script>
+      const url = 'https://heypizza.devmagic.com.br/';
+      let feedbacksByUser = {gives:[], receiveds:[], name: ''};
+      let period = '{{this.period}}', order = '{{this.order}}';
+      function selectPeriod() {
+        const newPeriod = document.getElementById("periods").value;
+        console.log('>>> newPeriod', newPeriod);
+        const newUrl = `${url}?period=${newPeriod}&order=${order}`;
+        console.log('>>> newUrl', newUrl);
+        window.location.href= newUrl;
+      }
+
+      function selectOrder() {
+        const newOrder = document.getElementById("orders").value;        
+        const newUrl = `${url}?period=${period}&order=${newOrder}`;
+        window.location.href= newUrl;
+      }
+
+      $('#myTabs a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+      })
+
+      $('#myModal').on('show.bs.modal', async function (event) {    
+        feedbacksByUser = {gives:[], receiveds:[], name: ''}
+        let button = $(event.relatedTarget)    
+        const userId = button.data('whatever')
+        console.log('>>> userId', userId);
+
+        const result = await axios.get(`https://heypizza.devmagic.com.br/feedback/user/${userId}`);
+        console.log('>>> result', result);
+        feedbacksByUser = result.data[0];
+
+        $("#gives-content").empty();
+        $("#receiveds-content").empty();
+
+        let modal = $(this)
+        modal.find('.modal-title').text(feedbacksByUser.name)
+
+
+        for (const give of feedbacksByUser.gives) {
+          $("#gives-content").append(`<li class="list-group-item">${give.message}</li>`)
+        }
+
+        for (const received of feedbacksByUser.receiveds) {
+          $("#receiveds-content").append(`<li class="list-group-item">${received.message}</li>`)
+        }
+
+    })
+    </script>
+  </body>
+</html>
