@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hey Pizza</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="./img/icon.png" >
+    <style>
+
+      .profile-img{
+        width: 80px;
+      }
+
+    </style>
+  </head>
+  <body style="background-color: #ffd684; padding: 16px;">
+    <div style="display: flex;flex-direction: column; align-items: center;">
+      <img style="width: 200px;" src="./img/logo.jpg">
+      
+      <h1 style="color: white;font-weight: 800;">Hey Pizza</h1>
+    </div>
+
+    <article class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Gives
+            </th>
+            <th>
+              Receiveds
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each users}}
+            <tr>
+              <td>
+                <!-- <img src="https://ca.slack-edge.com/T04L38A0J-UPXQB0TQW-a288a4e898f6-512" class="img-circle profile-img"> -->
+                {{this.name}}
+              </td>
+              <td>{{this.give.length}}</td>
+              <td>{{this.received.length}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </article>
+    
+    <footer style="display: flex;justify-content: center;">
+      <h5 style="color: white; font-weight: 600;">
+        creator by  <a style="margin: 0 8px;" href="https://github.com/laurencioScript">Gabriel Laurencio</a> & 
+        <a style="margin: 0 8px;" href="https://github.com/leandro-pereira">Tinhoso</a>
+      </h5>
+    </footer>
+  </body>
+</html>
