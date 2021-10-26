@@ -1,8 +1,9 @@
+const Slack = require('slack');
 const { Router } = require('express');
 const routes = Router();
-
 const serviceFeedback = require('./../services/feedback.service');
 const CHANNEL_ID = 'CQNEAJSF4';
+const userService = require('./../services/user.service');
 
 routes.post('/verification', function (req, res) {
   return   res.status(200).send(req.body.challenge);
@@ -16,6 +17,23 @@ routes.post('/webhooks', async (request, response) => {
     const event = request.body.event;
     
     switch (event.type) {
+      case 'member_joined_channel':
+
+        if(CHANNEL_ID != event.channel){
+          return response.status(300).send('channel invalid');
+        }
+        const externalId = event.user;
+        const token = process.env.SLACK_BOT_TOKEN;
+        let params = { user: externalId , token: token };
+        let { profile } = await Slack.users.info(params);
+        
+        await userService.create({
+          name: profile.real_name,
+          externalId: externalId,
+          profileImageUrl: profile.image_original,
+        });
+        
+        break;
       case 'app_mention':
       
         if(CHANNEL_ID != event.channel){
