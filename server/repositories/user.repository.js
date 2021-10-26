@@ -40,6 +40,18 @@ module.exports.getAll = async () => {
   }
 }
 
+module.exports.getUserByExternalId = async (externalId) => {
+  try {
+
+    const queryResult = await connection.query("select * from users where external_id = $1", [externalId]);
+
+    return camelcaseKeys(queryResult.rows);
+
+  } catch (error) {
+    throw { databaseError: true, error };
+  }
+}
+
 module.exports.getOne = async (userId) => {
   try {
 
