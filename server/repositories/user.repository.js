@@ -31,7 +31,7 @@ module.exports.create = async (user) => {
 module.exports.getAll = async () => {
   try {
 
-    const queryResult = await connection.query("select * from users");
+    const queryResult = await connection.query("select * from users where deleted_at is null");
 
     return camelcaseKeys(queryResult.rows);
 
@@ -119,7 +119,7 @@ module.exports.getAllUsersFeedbacks = async ({ startDate, endDate, columnOrder, 
       FROM 
         (select u.*,
           (select coalesce(sum(f2.pizza), 0) from feedbacks f2 where f2.created_at >= $1 and f2.created_at <= $2 and f2.user_id::text = u.id::text) as "gives", 
-          (select coalesce(sum(f2.pizza), 0) from feedbacks f2 where f2.created_at >= $1 and f2.created_at <= $2 and f2.user_praised_id::text = u.id::text) as "receiveds" from users as u) usersx
+          (select coalesce(sum(f2.pizza), 0) from feedbacks f2 where f2.created_at >= $1 and f2.created_at <= $2 and f2.user_praised_id::text = u.id::text) as "receiveds" from users as u ) usersx where usersx.deleted_at is null
       ORDER BY ${columnOrder} ${order} 
       `, params);
 
