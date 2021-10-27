@@ -26,7 +26,14 @@ module.exports.delete = async (feedbackId) => {
   return repositoryFeedback.delete(feedbackId);
 }
 
+module.exports.deleteAll = async () => {
+  return repositoryFeedback.deleteAll();
+}
+
 module.exports.retroactive = async () => {
+
+
+  await module.exports.deleteAll();
 
   let feedbacks = [];
   let nextCursor = null;
