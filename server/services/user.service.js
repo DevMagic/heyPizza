@@ -10,6 +10,10 @@ module.exports.getAll = async () => {
   return repositoryUser.getAll();
 }
 
+module.exports.getUserByExternalId = async (externalId) => {
+  return repositoryUser.getUserByExternalId(externalId);
+}
+
 module.exports.getOne = async (userId) => {
   return repositoryUser.getOne(userId);
 }

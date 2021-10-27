@@ -106,6 +106,24 @@ module.exports.delete = async (feedbackId) => {
   }
 }
 
+
+module.exports.deleteAll = async () => {
+  try {
+
+    const queryResult = await connection.query("DELETE FROM feedbacks;");
+
+    if (queryResult.rows.length == 0) {
+      return {};
+    }
+
+    return camelcaseKeys(queryResult.rows[0]);
+
+  } catch (error) {
+    console.log('>>> error', error);
+    throw { databaseError: true, error };
+  }
+}
+
 module.exports.getFeedbacksByUserId = async (userId) => {
   try {
 
