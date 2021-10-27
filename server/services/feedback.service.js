@@ -137,7 +137,12 @@ module.exports.newFeedbackBySlackEvent = async ({
 
   text = text.replace(`<@${botId}>`, '@heyPizza');
 
-  for (const user of users) {
+
+  while(!!~text.indexOf('|')){
+    text = text.replace(text.substring(text.indexOf('|'), text.indexOf('>')), "");
+  }
+  
+  for (const user of users) {    
     if (!!~text.indexOf(`<@${user.externalId}>`)) {
       usersPraised.push(user.id);
       text = text.replace(`<@${user.externalId}>`, user.name);
@@ -155,7 +160,7 @@ module.exports.newFeedbackBySlackEvent = async ({
       user_id: userId,
       message: text,
       pizza,
-      createdAt: moment.unix(createdAt).toDate()
+      createdAt: createdAt ? moment.unix(createdAt).toDate() : moment().toDate()
     });
 
   }

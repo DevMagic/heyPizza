@@ -4,6 +4,7 @@ const routes = Router();
 const serviceFeedback = require('./../services/feedback.service');
 const CHANNEL_ID = 'CQNEAJSF4';
 const userService = require('./../services/user.service');
+const slackService = require('./../services/slack.service');
 
 routes.post('/verification', function (req, res) {
   return   res.status(200).send(req.body.challenge);
@@ -61,7 +62,7 @@ routes.post('/webhooks', async (request, response) => {
         }
 
         await serviceFeedback.newFeedbackBySlackEvent(feedbackEvent);
-
+        await slackService.sendMessageToSlack({thread: null, channelId : CHANNEL_ID , message : 'Seja bem-vindo a bordo :rocket:'});
         break;
     
       default:

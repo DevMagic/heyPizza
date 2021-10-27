@@ -7,6 +7,7 @@ Uma iniciativa que visa valorizar as pessoas que estão sempre ajudando o time a
 * 26/10/2021 
   * Não sera listado usuarios que tiverem o **deleted_at** preenchido
   * Quando um novo usuario entrar no canal feedback positivo, sera criado sua conta automaticamente
+  * Agora é possivel enviar feedback positivo de forma anônima
 
 ## 🚀 Começando
 
