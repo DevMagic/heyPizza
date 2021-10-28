@@ -44,6 +44,7 @@ routes.post('/webhooks', async (request, response) => {
           }
 
           console.log('>>> newUser', newUser);
+          await slackService.sendMessageToSlack({thread: null, channelId : CHANNEL_ID , message : 'Seja bem-vindo a bordo :rocket:'});
           await userService.create(newUser);
         }
 
@@ -62,7 +63,7 @@ routes.post('/webhooks', async (request, response) => {
         }
 
         await serviceFeedback.newFeedbackBySlackEvent(feedbackEvent);
-        await slackService.sendMessageToSlack({thread: null, channelId : CHANNEL_ID , message : 'Seja bem-vindo a bordo :rocket:'});
+        
         break;
     
       default:
