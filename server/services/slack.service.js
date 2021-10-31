@@ -1,5 +1,4 @@
 const Slack = require('slack');
-const CHANNEL_ID = 'CQNEAJSF4';
 const userService = require('./user.service');
 const feedbackService = require('./feedback.service');
 
@@ -23,7 +22,7 @@ module.exports.webhook = async (event) => {
         }
 
         console.log('>>> newUser', newUser);
-        await module.exports.sendMessageToSlack({thread: null, channelId : CHANNEL_ID , message : 'Seja bem-vindo a bordo :rocket:'});
+        await module.exports.sendMessageToSlack({thread: null, channelId : process.env.SLACK_CHANNEL_ID , message : 'Seja bem-vindo a bordo :rocket:'});
         await userService.create(newUser);
       }
 

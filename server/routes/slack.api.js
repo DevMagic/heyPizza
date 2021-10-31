@@ -1,10 +1,9 @@
 const { Router } = require('express');
 const routes = Router();
-const CHANNEL_ID = 'CQNEAJSF4';
 const slackService = require('./../services/slack.service');
 
 routes.post('/verification', function (req, res) {
-  return   res.status(200).send(req.body.challenge);
+  return res.status(200).send(req.body.challenge);
 })
   
 routes.post('/webhooks', async (request, response) => {
@@ -19,7 +18,7 @@ routes.post('/webhooks', async (request, response) => {
 
     const event = request.body.event;
 
-    if(CHANNEL_ID != event.channel){
+    if(process.env.SLACK_CHANNEL_ID != event.channel){
       return response.status(300).send('channel invalid');
     }
     

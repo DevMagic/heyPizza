@@ -50,9 +50,7 @@ routes.get('/', async (request, response) => {
 routes.post('/new-feedback', async  (request, response) => {
   try {
     
-    const CHANNEL_ID = 'CQNEAJSF4';
-    // const CHANNEL_ID = 'C02K5QJ257V'; // canal de teste
-
+    const CHANNEL_ID = process.env.SLACK_CHANNEL_ID;
     const message =  request.body.text;
     const userPostMessage = request.body.user_id;
 

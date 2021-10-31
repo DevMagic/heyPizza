@@ -62,7 +62,7 @@ module.exports.retroactive = async () => {
 
   const users = await serviceUser.getAll();
 
-  let botId = process.env.botId;
+  let botId = process.env.SLACK_BOT_ID;
   feedbacks = feedbacks.filter(feedback => !!~feedback.text.indexOf(botId));
 
   const newFeedbacks = [];
@@ -123,7 +123,7 @@ module.exports.newFeedbackBySlackEvent = async ({
   user_external_id
 }) => {
 
-  const botId = process.env.botId;
+  const botId = process.env.SLACK_BOT_ID;
   const usersPraised = [];
   const newFeedbacks = [];
 
