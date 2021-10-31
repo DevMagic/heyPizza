@@ -1,6 +1,5 @@
 const express = require('express');
 const routes = require('./server/routes');
-const path = require('path')
 
 try {
   const server = express();
@@ -8,9 +7,8 @@ try {
   server.use(express.urlencoded({ extended: false }));
   server.use('/public', express.static('server/view/public'));
   server.use(routes);
-  server.listen(3101, ()=>console.log('Server ON'));
+  server.listen(process.env.API_PORT, ()=>console.log(`Server Online - ${process.env.API_PORT}`));
 } catch (e) {
-  console.log('Server Off');
+  console.log(`Server Offline - ${process.env.API_PORT}`);
   console.log('>>> Error',e);
-
 }
