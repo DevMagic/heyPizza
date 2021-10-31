@@ -8,6 +8,4 @@ let config = {
   port: process.env.PORT,
 }
 
-console.log('>>> config', config);
-
 module.exports = {connection: new Pool(config)};
