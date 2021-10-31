@@ -8,4 +8,24 @@ let config = {
   port: process.env.DB_PORT,
 }
 
-module.exports = {connection: new Pool(config)};
+const pool = new Pool(config);
+
+const db = () => {
+  return {
+    query: async (query, params) => {
+      let client = await pool.connect(),
+        result;
+      try{
+        result = await client.query(query, params);
+      }
+      catch(e){
+        client.release();
+        throw e;
+      }
+      client.release();
+      return result;
+    }
+  }
+};
+
+module.exports = {connection: db()};
