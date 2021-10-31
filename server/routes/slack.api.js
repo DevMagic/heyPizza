@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const routes = Router();
 const slackService = require('./../services/slack.service');
+const feedbackService = require('./../services/feedback.service');
 
 routes.post('/verification', function (req, res) {
     // #swagger.tags = ['Slack']
@@ -32,6 +33,33 @@ routes.post('/webhooks', async (request, response) => {
   catch(e){
     console.log('>>> error', e);
     return response.status(400).send(e);
+  }
+  
+})
+
+routes.post('/new-feedback', async  (request, response) => {
+  try {
+    // #swagger.tags = ['Slack']
+    const CHANNEL_ID = process.env.SLACK_CHANNEL_ID;
+    const message =  request.body.text;
+    const userPostMessage = request.body.user_id;
+
+    if(message.includes(userPostMessage)){
+      return response.send('Não pode enviar feedback para si mesmo!');
+    }
+
+    await feedbackService.newFeedbackBySlackEvent({
+      createdAt: null,
+      text: message,
+      user_external_id: userPostMessage
+    })
+
+    await slackService.sendMessageToSlack({thread: null, channelId : CHANNEL_ID , message : message});
+    return response.send('feedback enviado!');
+
+  } catch (error) {
+    console.log('>>> error', error);
+    return response.send('Feedback não enviado, houve um problema!');
   }
   
 })

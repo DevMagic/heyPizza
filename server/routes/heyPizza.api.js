@@ -12,8 +12,6 @@ Handlebars.registerHelper('select', function(selected, options) {
 });
 
 const serviceUser = require('./../services/user.service');
-const serviceFeedback = require('./../services/feedback.service');
-const slackFeedback = require('./../services/slack.service');
 
 routes.get('/', async (request, response) => {
   try {
@@ -43,33 +41,6 @@ routes.get('/', async (request, response) => {
   catch(e){
     console.log('>>> e', e);
     return response.status(400).send(e);
-  }
-  
-})
-
-routes.post('/new-feedback', async  (request, response) => {
-  try {
-    
-    const CHANNEL_ID = process.env.SLACK_CHANNEL_ID;
-    const message =  request.body.text;
-    const userPostMessage = request.body.user_id;
-
-    if(message.includes(userPostMessage)){
-      return response.send('Não pode enviar feedback para si mesmo!');
-    }
-
-    await serviceFeedback.newFeedbackBySlackEvent({
-      createdAt: null,
-      text: message,
-      user_external_id: userPostMessage
-    })
-
-    await slackFeedback.sendMessageToSlack({thread: null, channelId : CHANNEL_ID , message : message});
-    return response.send('feedback enviado!');
-
-  } catch (error) {
-    console.log('>>> error', error);
-    return response.send('Feedback não enviado, houve um problema!');
   }
   
 })
