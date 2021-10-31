@@ -1,3 +1,7 @@
+CREATE database heypizza_test
+
+CREATE EXTENSION "uuid-ossp" SCHEMA "public" VERSION '1.1';
+
 CREATE TABLE public.users (
 	id uuid NOT NULL DEFAULT uuid_generate_v4(),
 	name varchar NULL,

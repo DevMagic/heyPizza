@@ -13,7 +13,7 @@ try {
   server.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
   server.use('/public', express.static('server/view/public'));
   server.use(routes);
-  server.listen(process.env.API_PORT, ()=>console.log(`Server Online - ${process.env.API_PORT}`));
+  server.listen(process.env.API_PORT, ()=> console.log(`Server Online - ${process.env.API_PORT}`));
 } catch (e) {
   console.log(`Server Offline - ${process.env.API_PORT}`);
   console.log('>>> Error',e);
