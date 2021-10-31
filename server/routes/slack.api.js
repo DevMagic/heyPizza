@@ -3,11 +3,13 @@ const routes = Router();
 const slackService = require('./../services/slack.service');
 
 routes.post('/verification', function (req, res) {
-  return res.status(200).send(req.body.challenge);
+    // #swagger.tags = ['Slack']
+    return res.status(200).send(req.body.challenge);
 })
   
 routes.post('/webhooks', async (request, response) => {
   try {
+    // #swagger.tags = ['Slack']
     console.log('>>> request', request.body);
     
     const typeEvent = request.body.type;
