@@ -176,6 +176,7 @@ module.exports.newFeedbackBySlackEvent = async ({
     await this.create(newFeedback);
   }
 
+  return newFeedbacks;
 }
 
 module.exports.getFeedbacksByUserId = async (userId) => {
