@@ -4,6 +4,7 @@ const routes = Router();
 const serviceUser = require('./../services/user.service');
 
 routes.post('/', async (request, response) => {
+  // #swagger.tags = ['User']
   try {
     const user = request.body;
 
@@ -21,12 +22,12 @@ routes.post('/', async (request, response) => {
 })
 
 routes.get('/', async (request, response) => {
+  // #swagger.tags = ['User']
 
   try {
     
     
     const users = await serviceUser.getAll();
-    console.log('>>> users', users);
     return response.send(users);
   } catch (error) {
     return response.status(400).send(error);
@@ -34,6 +35,7 @@ routes.get('/', async (request, response) => {
 })
 
 routes.get('/:userId', async (request, response) => {
+  // #swagger.tags = ['User']
   try {
     
     
@@ -52,6 +54,7 @@ routes.get('/:userId', async (request, response) => {
 })
 
 routes.put('/:userId', async (request, response) => {
+  // #swagger.tags = ['User']
   try {
     
     const userId = request.params.userId;
@@ -72,6 +75,8 @@ routes.put('/:userId', async (request, response) => {
 })
 
 routes.delete('/:userId', async (request, response) => {
+  // #swagger.tags = ['User']
+  
   try {
     
     const userId = request.params.userId;

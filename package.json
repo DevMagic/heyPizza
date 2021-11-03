@@ -1,12 +1,13 @@
 {
-  "name": "slack-bot",
+  "name": "hey-pizza",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index",
-    "dev": "nodemon index"
+    "dev": "nodemon index",
+    "swagger-autogen": "node swagger.js",
+    "test": "jest  --watch"
   },
   "keywords": [],
   "author": "",
@@ -21,9 +22,13 @@
     "momentjs": "^2.0.0",
     "pg": "^8.7.1",
     "slack": "^11.0.2",
-    "snakecase-keys": "^4.0.2"
+    "snakecase-keys": "^4.0.2",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.12",
+    "supertest": "^6.1.6",
+    "swagger-autogen": "^2.12.4"
   }
 }

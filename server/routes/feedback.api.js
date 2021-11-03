@@ -4,7 +4,7 @@ const serviceFeedback = require('./../services/feedback.service');
 
 routes.post('/', async (request, response) => {
   try {
-    
+    // #swagger.tags = ['Feedback']
     const feedback = request.body;
 
     if(!feedback){
@@ -22,7 +22,7 @@ routes.post('/', async (request, response) => {
 
 routes.get('/', async (request, response) => {
   try {
-
+    // #swagger.tags = ['Feedback']
     const feedbacks = await serviceFeedback.getAll();
     
     return response.send(feedbacks);
@@ -34,6 +34,7 @@ routes.get('/', async (request, response) => {
 
 routes.get('/:feedbackId', async (request, response) => {
   try {
+    // #swagger.tags = ['Feedback']
     const feedbackId = request.params.feedbackId;
     
     if(!feedbackId) {
@@ -51,6 +52,7 @@ routes.get('/:feedbackId', async (request, response) => {
 
 routes.put('/:feedbackId', async (request, response) => {
   try {
+    // #swagger.tags = ['Feedback']
     const feedbackId = request.params.feedbackId;
     const feedback = request.body;
     
@@ -70,6 +72,7 @@ routes.put('/:feedbackId', async (request, response) => {
 
 routes.delete('/:feedbackId', async (request, response) => {
   try {
+    // #swagger.tags = ['Feedback']
     const feedbackId = request.params.feedbackId;
     
     if(!feedbackId) {
@@ -86,7 +89,7 @@ routes.delete('/:feedbackId', async (request, response) => {
 
 routes.post('/retroactive', async (request, response) => {
   try {
-    
+    // #swagger.tags = ['Feedback']
     return response.send(await serviceFeedback.retroactive());
   } catch (error) {
     console.log('>>> error', error);
@@ -96,7 +99,7 @@ routes.post('/retroactive', async (request, response) => {
 
 routes.get('/user/:userId', async (request, response) => {
   try {
-
+    // #swagger.tags = ['Feedback']
     const userId = request.params.userId;
 
     return response.send(await serviceFeedback.getFeedbacksByUserId(userId));

@@ -4,6 +4,13 @@ Uma iniciativa que visa valorizar as pessoas que estão sempre ajudando o time a
 
 ## 📌 Atualizações
 
+* 31/10/2021 
+  * Alterado os nomes das variaveis de ambiente
+  * Feito uma melhoria na criação de conexão com o database
+  * Implementado uma documentação automatica com o Swagger "/doc"
+  * Implementado testes que garantem o funcionamento correto das rotas "/user"
+
+
 * 26/10/2021 
   * Não sera listado usuarios que tiverem o **deleted_at** preenchido
   * Quando um novo usuario entrar no canal feedback positivo, sera criado sua conta automaticamente
