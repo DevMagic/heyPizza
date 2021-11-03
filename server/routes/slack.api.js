@@ -48,11 +48,15 @@ routes.post('/new-feedback', async  (request, response) => {
       return response.send('Não pode enviar feedback para si mesmo!');
     }
 
-    await feedbackService.newFeedbackBySlackEvent({
+    const feedbacks = await feedbackService.newFeedbackBySlackEvent({
       createdAt: null,
       text: message,
       user_external_id: userPostMessage
     })
+
+    if(feedbacks && feedbacks.length == 0){
+      return response.send('Não foi possivel enviar feedback, nenhum usuario foi marcado!');
+    }
 
     await slackService.sendMessageToSlack({thread: null, channelId : CHANNEL_ID , message : message});
     return response.send('feedback enviado!');
