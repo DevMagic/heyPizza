@@ -39,7 +39,7 @@ module.exports.retroactive = async () => {
   let nextCursor = null;
   do {
 
-    let params = { channel: process.env.channelId, token: token };
+    let params = { channel: process.env.SLACK_CHANNEL_ID, token: token };
 
     if (nextCursor) {
       params.cursor = nextCursor;
@@ -54,7 +54,7 @@ module.exports.retroactive = async () => {
 
   for (const feedback of feedbacks) {
     if (feedback['reply_count']) {
-      let params = { channel: process.env.channelId, token: token, ts: feedback.ts };
+      let params = { channel: process.env.SLACK_CHANNEL_ID, token: token, ts: feedback.ts };
       let history = await Slack.conversations.replies(params);
       feedbacks = feedbacks.concat(history.messages);
     }
